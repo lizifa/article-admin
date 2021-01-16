@@ -5,9 +5,9 @@ const service = axios.create({
   timeout: 200000,
 });
 
+axios.defaults.withCredentials = false;
+
 function requestSuccess(config) {
-  config.headers["x-real-url"] = window.location.href; // 携带url,用于鉴权
-  console.log(config);
   return config;
 }
 
