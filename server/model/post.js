@@ -65,10 +65,10 @@ class PostModel {
         modSqlParams.push(`'${arr[1]}'`)
         modSqlKeys.push(`${arr[0]} = ?`)
       })
-      let modSql = `UPDATE article SET ${modSqlKeys.toString()} WHERE article_id = '${id}'?`
-      // let modSql = `UPDATE article SET rief_content = '${tableFields.rief_content}',category_id = '${tableFields.category_id}',cover_image = '${tableFields.cover_image}',edit_type = '${tableFields.edit_type}',html_content = '${tableFields.html_content}',is_english = '${tableFields.is_english}',is_gfw = '${tableFields.is_gfw}',is_original = '${tableFields.is_original}',link_url = '${tableFields.link_url}',mark_content = '${tableFields.mark_content}',tag_ids = '${tableFields.tag_ids}',title = '${tableFields.title}',article_id = '${tableFields.article_id}',create_time = '${tableFields.create_time}',update_time = '${tableFields.update_time}'  WHERE article_id = '${tableFields.article_id}'`
+      // let modSql = `UPDATE article SET ${modSqlKeys.toString()} WHERE article_id = '${id}'?`
+      let modSql = `UPDATE article SET rief_content = '${tableFields.rief_content}',category_id = '${tableFields.category_id}',cover_image = '${tableFields.cover_image}',edit_type = '${tableFields.edit_type}',html_content = '${tableFields.html_content}',is_english = '${tableFields.is_english}',is_gfw = '${tableFields.is_gfw}',is_original = '${tableFields.is_original}',link_url = '${tableFields.link_url}',mark_content = '${tableFields.mark_content}',tag_ids = '${tableFields.tag_ids}',title = '${tableFields.title}',article_id = '${tableFields.article_id}',create_time = '${tableFields.create_time}',update_time = '${tableFields.update_time}'  WHERE article_id = '${tableFields.article_id}'`
       console.log(modSqlKeys, modSqlParams)
-      db.query(modSql, modSqlParams, async (err, results) => {
+      db.query(modSql, async (err, results) => {
         if (err) {
           reject(err)
         }
