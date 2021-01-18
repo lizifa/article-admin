@@ -1,12 +1,7 @@
 <template>
-  <CreatePostComponent></CreatePostComponent>
+  <router-view />
 </template>
 
 <script>
-import CreatePostComponent from "./components/createPost";
-export default {
-  components: {
-    CreatePostComponent,
-  },
-};
+export default {}
 </script>
