@@ -4,6 +4,7 @@ let md5 = require('md5-node')
 let PostModel = require('../model/post')
 let { makeResponse } = require('../utils')
 let sql = new PostModel()
+let Joi = require('joi')
 
 const post = [
   { id: 1, name: 'book1' },
@@ -57,14 +58,17 @@ router.put('/post/:id', async (req, res) => {
 })
 
 // 删除帖子
-router.delete('/post/:id', async (req, res) => {
-  let book = post.find(b => b.id === parseInt(req.params.id))
-  if (!book) {
-    return res.status(404).json({ msg: 'The book with the given ID not find.' })
-  }
-  const index = post.indexOf(book)
-  post.splice(index, 1)
-  res.json(book).end()
+router.delete('/post/:id', (req, res) => {
+  const { id } = req.params
+  Joi.validate(
+    req.params,
+    { id: Joi.string().required() },
+    async (err, value) => {
+      console.log(err, value)
+      await sql.delete(id)
+      makeResponse(res, {})
+    }
+  )
 })
 
 // 发布帖子
@@ -86,23 +90,56 @@ router.post('/public', async (req, res) => {
 })
 
 // 创建或更新帖子
-router.post('/update', async (req, res) => {
+router.post('/update', (req, res) => {
   let timestamp = new Date().valueOf()
   let formData = req.body
-  if (formData.article_id) {
-    formData = Object.assign(formData, {
-      update_time: timestamp
-    })
-    await sql.update(formData.article_id, formData)
-  } else {
-    formData = Object.assign(formData, {
-      article_id: md5(String(timestamp)),
-      create_time: timestamp,
-      update_time: timestamp
-    })
-    await sql.insert(formData)
-  }
-  makeResponse(res, {})
+  Joi.validate(
+    formData,
+    {
+      rief_content: Joi.string()
+        .min(3)
+        .max(30)
+        .required(),
+      // .error(new Error('参数校验失败')),
+      html_content: Joi.string()
+        .min(3)
+        .max(30)
+        .required(),
+      // .error(new Error('参数校验失败')),
+      title: Joi.string()
+        .min(3)
+        .max(30)
+        .required(),
+      // .error(new Error('参数校验失败')),
+      mark_content: Joi.string()
+        .min(3)
+        .max(30)
+        .required()
+      // .error(new Error('参数校验失败'))
+    },
+    async err => {
+      if (err) {
+        return makeResponse(res, {
+          code: 401,
+          message: err.details
+        })
+      }
+      if (formData.article_id) {
+        formData = Object.assign(formData, {
+          update_time: timestamp
+        })
+        await sql.update(formData.article_id, formData)
+      } else {
+        formData = Object.assign(formData, {
+          article_id: md5(String(timestamp)),
+          create_time: timestamp,
+          update_time: timestamp
+        })
+        await sql.insert(formData)
+      }
+      makeResponse(res, {})
+    }
+  )
 })
 
 module.exports = router

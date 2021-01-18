@@ -26,7 +26,14 @@ export function getListAction(params) {
 
 export function getArticle(params) {
   return new request({
-    url: `post/${params.id}`,
+    url: `post/${params.article_id}`,
     method: 'get'
+  })
+}
+
+export function deleteArticle(params) {
+  return new request({
+    url: `post/${params.article_id}`,
+    method: 'delete'
   })
 }

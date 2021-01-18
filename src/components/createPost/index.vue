@@ -54,6 +54,7 @@
         </el-option>
       </el-select>
     </el-form-item>
+
     <el-form-item
       prop="mark_content"
       :rules="[{ required: true, message: '发布内容不能为空' }]"
@@ -64,7 +65,8 @@
         style="min-height: 600px"
       />
     </el-form-item>
-    <!-- <el-form-item label="封面" prop="cover_image" required>
+
+    <el-form-item label="封面" prop="cover_image" required>
       <el-upload
         drag
         action="https://jsonplaceholder.typicode.com/posts/"
@@ -76,7 +78,8 @@
           只能上传jpg/png文件，且不超过500kb
         </div>
       </el-upload>
-    </el-form-item> -->
+    </el-form-item>
+
     <el-form-item>
       <el-button type="primary" @click="submitForm('formData')" size="mini"
         >提交</el-button
@@ -107,7 +110,7 @@ export default {
         html_content: '',
         is_english: '',
         is_gfw: '',
-        is_original: '',
+        is_original: '1',
         link_url: '',
         mark_content: '',
         tag_ids: [],
