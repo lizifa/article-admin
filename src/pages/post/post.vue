@@ -12,11 +12,13 @@ export default {
   },
   methods: {
     async getArticle() {
-      let { params } = this.$route
-      let { code, data } = await getArticle({ id: params.id })
-      if (code === 0) {
-        data[0].tag_ids = JSON.parse(data[0].tag_ids)
-        this.$refs['postComponent'].init(data[0])
+      let { params, name } = this.$route
+      if (name === 'update') {
+        let { code, data } = await getArticle({ id: params.id })
+        if (code === 0) {
+          data[0].tag_ids = JSON.parse(data[0].tag_ids)
+          this.$refs['postComponent'].init(data[0])
+        }
       }
     }
   },

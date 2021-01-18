@@ -1,17 +1,54 @@
 let { db } = require('../middleware/MiddlewareMysql')
+function transformData(insertData) {
+  insertData = {
+    rief_content: insertData.rief_content,
+    category_id: insertData.category_id,
+    cover_image: insertData.cover_image,
+    edit_type: insertData.edit_type,
+    html_content: insertData.html_content,
+    is_english: insertData.is_english,
+    is_gfw: insertData.is_gfw,
+    is_original: insertData.is_original,
+    link_url: insertData.link_url,
+    mark_content: insertData.mark_content,
+    tag_ids: insertData.tag_ids,
+    title: insertData.title,
+    article_id: insertData.article_id,
+    create_time: insertData.create_time,
+    update_time: insertData.update_time
+  }
+  return {
+    rief_content: insertData.rief_content,
+    category_id: insertData.category_id,
+    cover_image: insertData.cover_image,
+    edit_type: insertData.edit_type,
+    html_content: insertData.html_content,
+    is_english: insertData.is_english,
+    is_gfw: insertData.is_gfw,
+    is_original: insertData.is_original,
+    link_url: insertData.link_url,
+    mark_content: insertData.mark_content,
+    tag_ids: insertData.tag_ids,
+    title: insertData.title,
+    article_id: insertData.article_id,
+    create_time: insertData.create_time,
+    update_time: insertData.update_time
+  }
+}
+
 class PostModel {
   async insert(insertData) {
     return new Promise((resolve, reject) => {
-      let keys = []
-      let values = []
-      Object.entries(insertData).map(arr => {
-        keys.push(arr[0])
-        values.push(arr[1])
+      let tableFields = transformData(insertData)
+      let insertKeys = []
+      let addSqlParams = []
+      Object.entries(tableFields).map(arr => {
+        insertKeys.push(arr[0])
+        addSqlParams.push(arr[1])
       })
-      let sql = `INSERT INTO article(${String(
-        keys
-      )}) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-      db.query(sql, values, async (err, results) => {
+      let insertSql = `INSERT INTO article (${insertKeys.toString()}) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+      console.log(insertSql, insertKeys)
+      db.query(insertSql, addSqlParams, async (err, results) => {
         if (err) {
           reject(err)
         }
@@ -21,16 +58,17 @@ class PostModel {
   }
   async update(id, insertData) {
     return new Promise((resolve, reject) => {
-      let keysString = ''
-      let values = []
-      Object.entries(insertData).map(arr => {
-        keysString += arr[0] + '= ?,'
-        values.push(arr[1])
+      let tableFields = transformData(insertData)
+      let modSqlParams = []
+      let modSqlKeys = []
+      Object.entries(tableFields).map(arr => {
+        modSqlParams.push(`'${arr[1]}'`)
+        modSqlKeys.push(`${arr[0]} = ?`)
       })
-      keysString = keysString.slice(0, -1)
-      let sql = `UPDATE article SET ${keysString} WHERE article_id = '${id}'`
-      console.log(sql)
-      db.query(sql, values, async (err, results) => {
+      let modSql = `UPDATE article SET ${modSqlKeys.toString()} WHERE article_id = '${id}'?`
+      // let modSql = `UPDATE article SET rief_content = '${tableFields.rief_content}',category_id = '${tableFields.category_id}',cover_image = '${tableFields.cover_image}',edit_type = '${tableFields.edit_type}',html_content = '${tableFields.html_content}',is_english = '${tableFields.is_english}',is_gfw = '${tableFields.is_gfw}',is_original = '${tableFields.is_original}',link_url = '${tableFields.link_url}',mark_content = '${tableFields.mark_content}',tag_ids = '${tableFields.tag_ids}',title = '${tableFields.title}',article_id = '${tableFields.article_id}',create_time = '${tableFields.create_time}',update_time = '${tableFields.update_time}'  WHERE article_id = '${tableFields.article_id}'`
+      console.log(modSqlKeys, modSqlParams)
+      db.query(modSql, modSqlParams, async (err, results) => {
         if (err) {
           reject(err)
         }

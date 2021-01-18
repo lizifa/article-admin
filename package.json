@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "vue-cli-service serve",
+    "client": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "serve": "nodemon server/main.js"
@@ -19,7 +19,9 @@
     "lodash": "^4.17.20",
     "mavon-editor": "^2.9.1",
     "md5-node": "^1.0.1",
-    "vue": "^2.6.11"
+    "mysql": "^2.18.1",
+    "vue": "^2.6.11",
+    "vue-router": "^3.4.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

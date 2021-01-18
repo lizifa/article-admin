@@ -6,6 +6,22 @@
     label-position="top"
     label-suffix="："
   >
+    <el-form-item label="文章来源" prop="is_original" required>
+      <span>
+        <el-radio v-model="formData.is_original" label="1">原创</el-radio>
+        <el-radio v-model="formData.is_original" label="2">转载</el-radio>
+      </span>
+    </el-form-item>
+
+    <el-form-item
+      label="文章来源链接"
+      prop="link_url"
+      required
+      v-if="formData.is_original == 2"
+    >
+      <el-input v-model="formData.link_url"></el-input>
+    </el-form-item>
+
     <el-form-item label="文章标题" prop="title" required>
       <el-input v-model="formData.title"></el-input>
     </el-form-item>

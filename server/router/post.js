@@ -100,7 +100,7 @@ router.post('/update', async (req, res) => {
       create_time: timestamp,
       update_time: timestamp
     })
-    // await sql.insert(formData)
+    await sql.insert(formData)
   }
   makeResponse(res, {})
 })
