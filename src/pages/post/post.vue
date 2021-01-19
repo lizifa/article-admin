@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { getArticle, updateAction } from '../../apis/common'
+import { getArticle, updateAction } from '../../api/common'
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import { cloneDeep } from 'lodash'

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { getListAction, deleteArticle } from '../../apis/common'
+import { getListAction, deleteArticle } from '../../api/common'
 
 export default {
   data() {
