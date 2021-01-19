@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-const routes = [
+
+let routes = [
   {
     path: '/',
     name: '文章列表',
@@ -26,7 +27,8 @@ const routes = [
     }
   }
 ]
-const router = new VueRouter({
+
+let router = new VueRouter({
   mode: 'history',
   routes
 })
