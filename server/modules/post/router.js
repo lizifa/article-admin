@@ -1,8 +1,8 @@
 let express = require('express')
 let router = express.Router()
 let md5 = require('md5-node')
-let PostModel = require('../model/post')
-let { makeResponse } = require('../utils')
+let PostModel = require('./model')
+let { makeResponse } = require('../../utils')
 let sql = new PostModel()
 let Joi = require('joi')
 

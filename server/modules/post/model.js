@@ -1,4 +1,4 @@
-let { db } = require('../middleware/MiddlewareMysql')
+let { db } = require('../../middleware/MiddlewareMysql')
 function transformData(insertData) {
   return {
     rief_content: insertData.rief_content,

@@ -1,4 +1,4 @@
-let postRouter = require('./post')
+let postRouter = require('./modules/post/router')
 let bodyParser = require('body-parser')
 let AccessControlAllowOrigin = '*'
 let AccessControlAllowHeaders = 'Accept,Content-type,x-real-url'
