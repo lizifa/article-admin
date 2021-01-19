@@ -90,56 +90,54 @@ router.post('/public', async (req, res) => {
 })
 
 // 创建或更新帖子
-router.post('/update', (req, res) => {
+router.post('/update', async (req, res) => {
   let timestamp = new Date().valueOf()
   let formData = req.body
-  Joi.validate(
-    formData,
-    {
+  let validateFields = {
+    rief_content: formData.rief_content,
+    html_content: formData.html_content,
+    title: formData.title,
+    mark_content: formData.mark_content
+  }
+
+  try {
+    await Joi.object({
       rief_content: Joi.string()
         .min(3)
-        .max(30)
         .required(),
-      // .error(new Error('参数校验失败')),
       html_content: Joi.string()
         .min(3)
-        .max(30)
         .required(),
-      // .error(new Error('参数校验失败')),
       title: Joi.string()
         .min(3)
-        .max(30)
+        .max(20)
         .required(),
-      // .error(new Error('参数校验失败')),
       mark_content: Joi.string()
         .min(3)
-        .max(30)
         .required()
-      // .error(new Error('参数校验失败'))
-    },
-    async err => {
-      if (err) {
-        return makeResponse(res, {
-          code: 401,
-          message: err.details
-        })
-      }
-      if (formData.article_id) {
-        formData = Object.assign(formData, {
-          update_time: timestamp
-        })
-        await sql.update(formData.article_id, formData)
-      } else {
-        formData = Object.assign(formData, {
-          article_id: md5(String(timestamp)),
-          create_time: timestamp,
-          update_time: timestamp
-        })
-        await sql.insert(formData)
-      }
+    }).validateAsync(validateFields)
+
+    if (formData.article_id) {
+      formData = Object.assign(formData, {
+        update_time: timestamp
+      })
+      await sql.update(formData.article_id, formData)
+      makeResponse(res, {})
+    } else {
+      formData = Object.assign(formData, {
+        article_id: md5(String(timestamp)),
+        create_time: timestamp,
+        update_time: timestamp
+      })
+      await sql.insert(formData)
       makeResponse(res, {})
     }
-  )
+  } catch (err) {
+    return makeResponse(res, {
+      code: 401,
+      message: err.details || {}
+    })
+  }
 })
 
 module.exports = router
