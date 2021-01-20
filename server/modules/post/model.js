@@ -20,8 +20,8 @@ function transformData(insertData) {
 }
 
 class PostModel {
-  async insert(insertData) {
-    return new Promise((resolve, reject) => {
+  insert(insertData) {
+    return new Promise(resolve => {
       let tableFields = transformData(insertData)
       let insertKeys = []
       let addSqlParams = []
@@ -30,17 +30,17 @@ class PostModel {
         addSqlParams.push(arr[1])
       })
       let insertSql = `INSERT INTO article (${insertKeys.toString()}) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-      db.query(insertSql, addSqlParams, async (err, results) => {
+      db.query(insertSql, addSqlParams, (err, results) => {
         if (err) {
-          reject(err)
+          resolve(err)
         } else {
           resolve(results)
         }
       })
     })
   }
-  async update(id, insertData) {
-    return new Promise((resolve, reject) => {
+  update(id, insertData) {
+    return new Promise(resolve => {
       let tableFields = transformData(insertData)
       let modSql = `
         UPDATE article SET 
@@ -59,66 +59,50 @@ class PostModel {
         article_id = '${tableFields.article_id}',
         create_time = '${tableFields.create_time}',
         update_time = '${tableFields.update_time}'
-        WHERE article_id = '${tableFields.article_id}'`
-      db.query(modSql, async (err, results) => {
+        WHERE article_id = '${id}'`
+      db.query(modSql, (err, results) => {
         if (err) {
-          reject(err)
+          resolve(err)
         } else {
           resolve(results)
         }
       })
     })
   }
-  async delete(id) {
-    return new Promise((resolve, reject) => {
-      db.query(
-        `DELETE FROM article WHERE article_id = '${id}' `,
-        async (err, results) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(results)
-          }
-        }
-      )
-    })
-  }
-  async queryById(id) {
-    return new Promise((resolve, reject) => {
-      let sql = `SELECT * FROM article WHERE article_id = '${id}'`
-      db.query(sql, async (err, results) => {
+  delete(id) {
+    return new Promise(resolve => {
+      let deleteSql = `DELETE FROM article WHERE article_id = '${id}' `
+      db.query(deleteSql, (err, results) => {
         if (err) {
-          console.log(err)
-          reject(err)
+          resolve(err)
         } else {
           resolve(results)
         }
       })
     })
   }
-  async queryAll(params) {
+  queryById(id) {
+    return new Promise(resolve => {
+      let getSql = `SELECT * FROM article WHERE article_id = '${id}'`
+      db.query(getSql, (err, results) => {
+        if (err) {
+          resolve(err)
+        } else {
+          resolve(results)
+        }
+      })
+    })
+  }
+  queryAll(params) {
     return new Promise(resolve => {
       let { page, size } = params
-      db.query(
-        `select * from article limit ${(page - 1) * size}, ${size}`,
-        async (err, results) => {
-          if (err) {
-            resolve(err)
-          } else {
-            resolve(results)
-          }
-        }
-      )
-    })
-  }
-  async queryByarticleName({ articleName = '', articlePassword = '' }) {
-    return new Promise((resolve, reject) => {
-      let sql = `SELECT * FROM article WHERE article_name = '${articleName}' AND password = '${articlePassword}'`
-      db.query(sql, async (err, results) => {
+      let querySql = `select * from article limit ${(page - 1) * size}, ${size}`
+      db.query(querySql, (err, results) => {
         if (err) {
-          reject(err)
+          resolve(err)
+        } else {
+          resolve(results)
         }
-        resolve(results)
       })
     })
   }

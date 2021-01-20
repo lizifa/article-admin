@@ -135,7 +135,7 @@ router.post('/update', async (req, res) => {
   } catch (err) {
     return makeResponse(res, {
       code: 401,
-      message: err.details || {}
+      message: err.details[0]['message'] || {}
     })
   }
 })
