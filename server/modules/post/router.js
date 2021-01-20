@@ -31,17 +31,11 @@ router.post('/post', async (req, res) => {
 })
 
 // 删除帖子
-router.delete('/post/:id', (req, res) => {
+router.delete('/post/:id', async (req, res) => {
+  console.log('aaaaaaa')
   const { id } = req.params
-  Joi.validate(
-    req.params,
-    { id: Joi.string().required() },
-    async (err, value) => {
-      console.log(err, value)
-      await sql.delete(id)
-      makeResponse(res, 205, {})
-    }
-  )
+  await sql.delete(id)
+  makeResponse(res, 205, {})
 })
 
 // 创建或更新帖子
@@ -65,7 +59,7 @@ router.post('/update', async (req, res) => {
         .required(),
       title: Joi.string()
         .min(3)
-        .max(20)
+        .max(40)
         .required(),
       mark_content: Joi.string()
         .min(3)
@@ -88,10 +82,7 @@ router.post('/update', async (req, res) => {
       makeResponse(res, 201, {})
     }
   } catch (err) {
-    return makeResponse(res, {
-      code: 401,
-      message: err.details[0]['message'] || {}
-    })
+    return makeResponse(res, 400, err.details[0]['message'] || {})
   }
 })
 

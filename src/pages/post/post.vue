@@ -81,6 +81,7 @@ import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import { cloneDeep } from 'lodash'
 import { category } from '../../utils/category'
+// import { data } from '../../utils/post2'
 export default {
   data() {
     return {
@@ -98,6 +99,7 @@ export default {
         mark_content: '',
         tag_ids: [],
         title: ''
+        // ...data
       }
     }
   },
@@ -107,7 +109,6 @@ export default {
   methods: {
     async getArticle() {
       let { params, name } = this.$route
-      console.log(name, params)
       if (name === 'update') {
         let { code, data } = await getArticle({ id: params.id })
         data = data[0]
