@@ -1,22 +1,23 @@
-let mysqlConfig = {
+const MYSQL_CONFIG = {
   host: 'localhost',
   user: 'root',
   password: 'lizifa',
   port: 3306,
-  database: 'post'
+  database: 'post',
+  charset: 'utf8mb4'
 }
 
-let PORT = 7000
+const PORT = 7000
 
-let express = require('express')
-let APP = express()
+const express = require('express')
+const APP = express()
 
-let ACCESSCONTROLALLOWORIGIN = '*'
-let ACCESSCONTROLALLOWHEADERS = 'Accept,Content-type,x-real-url'
-let ACCESSCONTROLALLOWMETHODS = 'PUT,POST,GET,DELETE,OPTIONS'
+const ACCESSCONTROLALLOWORIGIN = '*'
+const ACCESSCONTROLALLOWHEADERS = 'Accept,Content-type,x-real-url'
+const ACCESSCONTROLALLOWMETHODS = 'PUT,POST,GET,DEconstE,OPTIONS'
 
 module.exports = {
-  mysqlConfig,
+  MYSQL_CONFIG,
   PORT,
   APP,
   ACCESSCONTROLALLOWORIGIN,

@@ -1,15 +1,17 @@
-function makeResponse(res, data, callback) {
-  let defaultResponse = {
-    code: 0,
-    data: null,
+function makeResponse(res, httpStatus = 200, data = {}, callback) {
+  res.send({
+    code: httpStatus,
+    data,
     message: '获取成功',
     sysTime: new Date().getTime()
-  }
-  let response = Object.assign(defaultResponse, data)
-  res.send(response)
+  })
   callback && callback()
 }
 
+function changeRowDataPacket(data) {
+  return JSON.parse(JSON.stringify(data))
+}
 module.exports = {
-  makeResponse
+  makeResponse,
+  changeRowDataPacket
 }

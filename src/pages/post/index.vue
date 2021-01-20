@@ -54,7 +54,7 @@ export default {
   methods: {
     async getList() {
       const { code, data } = await getListAction({ page: 1, size: 20 })
-      if (code === 0) {
+      if (code === 200) {
         this.tableData = data
       }
     },

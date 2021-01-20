@@ -1,7 +1,7 @@
 import request from '../utils/request'
 
 export function updateAction(params) {
-  return new request({
+  return request({
     url: 'update',
     method: 'post',
     data: params
@@ -9,7 +9,7 @@ export function updateAction(params) {
 }
 
 export function publicAction(params) {
-  return new request({
+  return request({
     url: 'public',
     method: 'post',
     data: params
@@ -17,7 +17,7 @@ export function publicAction(params) {
 }
 
 export function getListAction(params) {
-  return new request({
+  return request({
     url: 'post',
     method: 'get',
     params: params
@@ -25,14 +25,14 @@ export function getListAction(params) {
 }
 
 export function getArticle(params) {
-  return new request({
-    url: `post/${params.article_id}`,
+  return request({
+    url: `post/${params.id}`,
     method: 'get'
   })
 }
 
 export function deleteArticle(params) {
-  return new request({
+  return request({
     url: `post/${params.article_id}`,
     method: 'delete'
   })

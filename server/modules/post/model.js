@@ -1,70 +1,29 @@
 let { db } = require('../../middleware/MiddlewareMysql')
-function transformData(insertData) {
-  return {
-    rief_content: insertData.rief_content,
-    category_id: insertData.category_id,
-    cover_image: insertData.cover_image,
-    edit_type: insertData.edit_type,
-    html_content: insertData.html_content,
-    is_english: insertData.is_english,
-    is_gfw: insertData.is_gfw,
-    is_original: insertData.is_original,
-    link_url: insertData.link_url,
-    mark_content: insertData.mark_content,
-    tag_ids: insertData.tag_ids,
-    title: insertData.title,
-    article_id: insertData.article_id,
-    create_time: insertData.create_time,
-    update_time: insertData.update_time
-  }
-}
-
+let { changeRowDataPacket } = require('../../utils')
+let { tableFields } = require('./tableField')
 class PostModel {
   insert(insertData) {
     return new Promise(resolve => {
-      let tableFields = transformData(insertData)
-      let insertKeys = []
-      let addSqlParams = []
-      Object.entries(tableFields).map(arr => {
-        insertKeys.push(arr[0])
-        addSqlParams.push(arr[1])
-      })
-      let insertSql = `INSERT INTO article (${insertKeys.toString()}) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-      db.query(insertSql, addSqlParams, (err, results) => {
+      let table = tableFields(insertData)
+      let insertSql = `INSERT INTO article SET rief_content = ${table.rief_content},category_id = ${table.category_id},cover_image = ${table.cover_image},edit_type = ${table.edit_type},html_content = ${table.html_content},is_english = ${table.is_english},is_gfw = ${table.is_gfw},is_original = ${table.is_original},link_url = ${table.link_url},mark_content = ${table.mark_content},tag_ids = ${table.tag_ids},title = ${table.title},article_id = ${table.article_id},create_time = ${table.create_time},update_time = ${table.update_time}`
+      db.query(insertSql, (err, results) => {
         if (err) {
-          resolve(err)
+          resolve({ code: 400, data: err })
         } else {
-          resolve(results)
+          resolve({ code: 200 })
         }
       })
     })
   }
   update(id, insertData) {
     return new Promise(resolve => {
-      let tableFields = transformData(insertData)
-      let modSql = `
-        UPDATE article SET 
-        rief_content = '${tableFields.rief_content}',
-        category_id = '${tableFields.category_id}',
-        cover_image = '${tableFields.cover_image}',
-        edit_type = '${tableFields.edit_type}',
-        html_content = '${tableFields.html_content}',
-        is_english = '${tableFields.is_english}',
-        is_gfw = '${tableFields.is_gfw}',
-        is_original = '${tableFields.is_original}',
-        link_url = '${tableFields.link_url}',
-        mark_content = '${tableFields.mark_content}',
-        tag_ids = '${tableFields.tag_ids}',
-        title = '${tableFields.title}',
-        article_id = '${tableFields.article_id}',
-        create_time = '${tableFields.create_time}',
-        update_time = '${tableFields.update_time}'
-        WHERE article_id = '${id}'`
+      let table = tableFields(insertData)
+      let modSql = `UPDATE article SET rief_content = ${table.rief_content},category_id = ${table.category_id},cover_image = ${table.cover_image},edit_type = ${table.edit_type},html_content = ${table.html_content},is_english = ${table.is_english},is_gfw = ${table.is_gfw},is_original = ${table.is_original},link_url = ${table.link_url},mark_content = ${table.mark_content},tag_ids = ${table.tag_ids},title = ${table.title},article_id = ${table.article_id},create_time = ${table.create_time},update_time = ${table.update_time} WHERE article_id = '${id}'`
       db.query(modSql, (err, results) => {
         if (err) {
-          resolve(err)
+          resolve({ code: 400, data: err })
         } else {
-          resolve(results)
+          resolve({ code: 201, data: results })
         }
       })
     })
@@ -74,9 +33,9 @@ class PostModel {
       let deleteSql = `DELETE FROM article WHERE article_id = '${id}' `
       db.query(deleteSql, (err, results) => {
         if (err) {
-          resolve(err)
+          resolve({ code: 400, data: err })
         } else {
-          resolve(results)
+          resolve({ code: 200 })
         }
       })
     })
@@ -86,9 +45,9 @@ class PostModel {
       let getSql = `SELECT * FROM article WHERE article_id = '${id}'`
       db.query(getSql, (err, results) => {
         if (err) {
-          resolve(err)
+          resolve({ code: 400, data: err })
         } else {
-          resolve(results)
+          resolve({ code: 200, data: results })
         }
       })
     })
@@ -99,9 +58,9 @@ class PostModel {
       let querySql = `select * from article limit ${(page - 1) * size}, ${size}`
       db.query(querySql, (err, results) => {
         if (err) {
-          resolve(err)
+          resolve({ code: 400, data: err })
         } else {
-          resolve(results)
+          resolve({ code: 200, data: changeRowDataPacket(results) })
         }
       })
     })

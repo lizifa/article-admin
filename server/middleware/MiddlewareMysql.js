@@ -1,6 +1,6 @@
 let mysql = require('mysql')
-let { mysqlConfig } = require('../config')
-let db = mysql.createConnection(mysqlConfig)
+let { MYSQL_CONFIG } = require('../config')
+let db = mysql.createConnection(MYSQL_CONFIG)
 async function useMysql() {
   await db.connect(err => {
     if (err) {
@@ -11,4 +11,4 @@ async function useMysql() {
   })
 }
 
-module.exports = { db, useMysql }
+module.exports = { db, useMysql, mysql }
