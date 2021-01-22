@@ -3,7 +3,6 @@ let router = express.Router()
 let PostModel = require('./model')
 let { makeResponse } = require('../../utils')
 let sql = new PostModel()
-let Joi = require('joi')
 
 // 获取帖子列表
 router.get('/post', async (req, res) => {
@@ -27,7 +26,6 @@ router.delete('/post/:id', async (req, res) => {
 
 router.post('/update', async (req, res) => {
   let formData = req.body
-  formData.article_id = ''
   if (formData.article_id) {
     await sql.update(formData.article_id, formData)
     makeResponse(res, 201)

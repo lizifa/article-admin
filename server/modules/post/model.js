@@ -19,6 +19,7 @@ class PostModel {
         createSql(insertData, { type: 'update', id }),
         (err, results) => {
           if (err) {
+            console.log(err)
             resolve({ code: 400, data: err })
           } else {
             resolve({ code: 201, data: results })
