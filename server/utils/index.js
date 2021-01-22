@@ -8,10 +8,6 @@ function makeResponse(res, httpStatus = 200, data = {}, callback) {
   callback && callback()
 }
 
-function changeRowDataPacket(data) {
-  return JSON.parse(JSON.stringify(data))
-}
 module.exports = {
-  makeResponse,
-  changeRowDataPacket
+  makeResponse
 }

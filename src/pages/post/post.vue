@@ -81,7 +81,8 @@ import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import { cloneDeep } from 'lodash'
 import { category } from '../../utils/category'
-// import { data } from '../../utils/post2'
+import { response } from '../../utils/test'
+console.log(response.data)
 export default {
   data() {
     return {
@@ -98,8 +99,8 @@ export default {
         link_url: '',
         mark_content: '',
         tag_ids: [],
-        title: ''
-        // ...data
+        title: '',
+        ...response.data[0]
       }
     }
   },
