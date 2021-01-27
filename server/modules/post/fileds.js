@@ -47,15 +47,14 @@ function createSql(data, options) {
     case 'update':
       sql = `
         UPDATE article SET 
-        rief_content = ${rief_content},
-        cover_image = ${cover_image},
-        html_content = ${html_content},
-        is_original = ${is_original},
-        link_url = ${link_url},
-        mark_content = ${mark_content},
-        tag_ids = ${tag_ids},
         title = ${title},
-        update_time = '${Date.parse(new Date())}' 
+        rief_content = ${rief_content},
+        mark_content = ${mark_content},
+        update_time = '${Date.parse(new Date())}',
+        is_original = ${is_original},
+        tag_ids = ${tag_ids},
+        cover_image = ${cover_image},
+        link_url = ${link_url}
         WHERE article_id = '${options.id}'
       `
       break
