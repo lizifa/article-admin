@@ -53,7 +53,7 @@ class PostModel {
   queryAll(params) {
     return new Promise(resolve => {
       let { page, size } = params
-      let querySql = `select * from article limit ${(page - 1) * size}, ${size}`
+      let querySql = `select * from article ORDER BY id DESC limit ${(page - 1) * size}, ${size}`
       db.query(querySql, (err, results) => {
         if (err) {
           resolve({ code: 400, data: err })

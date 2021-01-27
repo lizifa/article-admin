@@ -76,12 +76,13 @@
 </template>
 
 <script>
+// http://chuantu.biz/
 import { getArticle, updateAction } from '../../api/common'
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import { cloneDeep } from 'lodash'
 import { category } from '../../utils/category'
-import { response } from '../../utils/test'
+// import { response } from '../../utils/test'
 export default {
   data() {
     return {
@@ -110,7 +111,8 @@ export default {
       let { params, name } = this.$route
       if (name === 'update') {
         let { code, data } = await getArticle({ id: params.id })
-        data = response.data[0]
+        data = data[0]
+        // data = response.data[0]
         if (code === 200) {
           data.tag_ids = JSON.parse(data.tag_ids)
           this.formData = data
