@@ -4,7 +4,8 @@ let { createSql } = require('./fileds')
 class PostModel {
   insert(insertData) {
     return new Promise((resolve, reject) => {
-      db.query(createSql(insertData, { type: 'insert' }), err => {
+      let sql = createSql(insertData, { type: 'insert' })
+      db.query(sql, (err, results) => {
         if (err) {
           reject({ code: 400, data: err })
         } else {
@@ -15,21 +16,20 @@ class PostModel {
   }
   update(id, insertData) {
     return new Promise((resolve, reject) => {
-      db.query(
-        createSql(insertData, { type: 'update', id }),
-        (err, results) => {
-          if (err) {
-            reject({ code: 400, data: '参数错误~' })
-          } else {
-            resolve({ code: 201, data: results })
-          }
+      let sql = createSql(insertData, { type: 'update', id })
+      db.query(sql, (err, results) => {
+        if (err) {
+          reject({ code: 400, data: '参数错误~' })
+        } else {
+          resolve({ code: 201, data: results })
         }
-      )
+      })
     })
   }
   delete(id) {
     return new Promise((resolve, reject) => {
-      db.query(createSql({}, { type: 'delete', id }), err => {
+      let sql = createSql({}, { type: 'delete', id })
+      db.query(sql, (err, results) => {
         if (err) {
           reject({ code: 400, data: err })
         } else {
@@ -40,7 +40,8 @@ class PostModel {
   }
   queryById(id) {
     return new Promise((resolve, reject) => {
-      db.query(createSql({}, { type: 'select', id }), (err, results) => {
+      let sql = createSql({}, { type: 'select', id })
+      db.query(sql, (err, results) => {
         if (err) {
           reject({ code: 400, data: err })
         } else {
@@ -52,10 +53,8 @@ class PostModel {
   queryAll(params) {
     return new Promise((resolve, reject) => {
       let { page, size } = params
-      let querySql = `select * from article ORDER BY id DESC limit ${(page -
-        1) *
-        size}, ${size}`
-      db.query(querySql, (err, results) => {
+      let sql = `select * from article ORDER BY id DESC limit ${(page - 1) * size}, ${size}`
+      db.query(sql, (err, results) => {
         if (err) {
           reject({ code: 400, data: err })
         } else {
