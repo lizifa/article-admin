@@ -1,12 +1,13 @@
 let { mysql } = require('../../middleware/MiddlewareMysql')
 let md5 = require('md5-node')
 
-function fields(insertData) {
+function escape(insertData) {
   Object.keys(insertData).forEach(
     key => (insertData[key] = mysql.escape(insertData[key]))
   )
   return insertData
 }
+
 function createSql(data, options) {
   let {
     rief_content,
@@ -21,7 +22,7 @@ function createSql(data, options) {
     mark_content,
     tag_ids,
     title
-  } = fields(data)
+  } = escape(data)
   let sql = ''
   switch (options.type) {
     case 'insert':
@@ -50,7 +51,7 @@ function createSql(data, options) {
         title = ${title},
         rief_content = ${rief_content},
         mark_content = ${mark_content},
-        update_time = '${Date.parse(new Date())}',
+        update_time = ${Date.parse(new Date())},
         is_original = ${is_original},
         tag_ids = ${tag_ids},
         cover_image = ${cover_image},
@@ -73,6 +74,6 @@ function createSql(data, options) {
 }
 
 module.exports = {
-  fields,
+  escape,
   createSql
 }
