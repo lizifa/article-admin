@@ -8,7 +8,7 @@ class PostModel {
         if (err) {
           reject({ code: 400, data: err })
         } else {
-          resolve({ code: 200 })
+          resolve({ code: 201 })
         }
       })
     })

@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 let routes = [
   {
     path: '/',
-    name: '文章列表',
+    name: 'list',
     component: () => import('@/pages/post/index'),
     meta: {
       title: '文章列表'

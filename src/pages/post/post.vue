@@ -112,7 +112,6 @@ export default {
       if (name === 'update') {
         let { code, data } = await getArticle({ id: params.id })
         data = data[0]
-        // data = response.data[0]
         if (code === 200) {
           data.tag_ids = JSON.parse(data.tag_ids)
           this.formData = data
@@ -127,7 +126,12 @@ export default {
         if (valid) {
           let params = cloneDeep(this.formData)
           params.tag_ids = JSON.stringify(params.tag_ids)
-          updateAction(params)
+          let { code = 0, message = '' } = await updateAction(params)
+          if (code === 201) {
+            this.$router.push({ name: 'list' })
+          } else {
+            this.$message({message, type: 'warning'})
+          }
         }
       })
     }

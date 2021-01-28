@@ -1,12 +1,5 @@
-function makeResponse(res, httpStatus = 200, data = {}, callback) {
-  res.json({
-    code: httpStatus,
-    data,
-    message: '获取成功',
-    sysTime: new Date().getTime()
-  })
-  callback && callback()
-  return
+function makeResponse(res, response = { code: 200 }) {
+  res.json(Object.assign({code: 200, data: null, message: '获取成功', sysTime: Date.parse(new Date())}, response))
 }
 
 module.exports = {

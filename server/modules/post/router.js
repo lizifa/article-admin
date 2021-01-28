@@ -7,58 +7,52 @@ let Joi = require('joi')
 
 // 获取帖子列表
 router.get('/post', async (req, res) => {
-  const { code, data } = await sql.queryAll(req.query)
-  makeResponse(res, code, data)
+  let { code, data } = await sql.queryAll(req.query)
+  makeResponse(res, { code, data })
 })
 
 // 获取某个帖子详情
 router.get('/post/:id', async (req, res) => {
-  const { id } = req.params
-  const { code, data } = await sql.queryById(id)
-  makeResponse(res, code, data)
+  let { id } = req.params
+  let { code, data } = await sql.queryById(id)
+  makeResponse(res, { code, data })
 })
 
 // 删除帖子
 router.delete('/post/:id', async (req, res) => {
-  const { id } = req.params
+  let { id } = req.params
   await sql.delete(id)
-  makeResponse(res, 205, {})
+  makeResponse(res, { code: 205 })
 })
 
 router.post('/update', async (req, res) => {
   let formData = req.body
-  let validateFields = {
-    rief_content: formData.rief_content,
-    html_content: formData.html_content,
-    title: formData.title,
-    mark_content: formData.mark_content
-  }
-
   try {
     await Joi.object({
       rief_content: Joi.string()
         .min(3)
-        .required(),
-      html_content: Joi.string()
-        .min(3)
-        .required(),
+        .required()
+        .error(new Error('文章简介不符合验证规则')),
       title: Joi.string()
         .min(3)
         .max(40)
+        .error(new Error('文章标题不符合验证规则'))
         .required(),
       mark_content: Joi.string()
         .min(3)
         .required()
-    }).validateAsync(validateFields)
+        .error(new Error('文章内容不符合验证规则'))
+    }).validateAsync(formData, { stripUnknown: true })
     if (formData.article_id) {
       await sql.update(formData.article_id, formData)
-      makeResponse(res, 201)
+      makeResponse(res, { code: 201 })
     } else {
       await sql.insert(formData)
-      makeResponse(res, 201)
+      makeResponse(res, { code: 201 })
     }
   } catch (e) {
-    return makeResponse(res, 400, e.details[0]['message'] || {})
+    console.log(e)
+    return makeResponse(res, { code: 400, message: e.message })
   }
 })
 
