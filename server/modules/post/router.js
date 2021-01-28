@@ -51,7 +51,6 @@ router.post('/update', async (req, res) => {
       makeResponse(res, { code: 201 })
     }
   } catch (e) {
-    console.log(e)
     return makeResponse(res, { code: 400, message: e.message })
   }
 })
