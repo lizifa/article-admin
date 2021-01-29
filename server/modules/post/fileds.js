@@ -21,7 +21,8 @@ function createSql(data, options) {
     link_url,
     mark_content,
     tag_ids,
-    title
+    title,
+    reference
   } = escape(data)
   let sql = ''
   switch (options.type) {
@@ -40,6 +41,7 @@ function createSql(data, options) {
         mark_content = ${mark_content},
         tag_ids = ${tag_ids},
         title = ${title},
+        reference = ${reference},
         article_id = '${md5(String(Date.now()))}',
         create_time = ${Date.parse(new Date())},
         update_time = ${Date.parse(new Date())}
@@ -55,6 +57,7 @@ function createSql(data, options) {
         is_original = ${is_original},
         tag_ids = ${tag_ids},
         cover_image = ${cover_image},
+        reference = ${reference},
         link_url = ${link_url}
         WHERE article_id = '${options.id}'
       `

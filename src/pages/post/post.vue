@@ -21,7 +21,6 @@
     >
       <el-input v-model="formData.link_url"></el-input>
     </el-form-item>
-
     <el-form-item label="文章标题" prop="title" required>
       <el-input v-model="formData.title"></el-input>
     </el-form-item>
@@ -66,12 +65,48 @@
         style="min-height: 600px"
       />
     </el-form-item>
-
-    <el-form-item>
+    <template v-if="formData.reference.length">
+      <el-form-item label="参考资料">
+        <div
+          v-for="(item, index) in formData.reference"
+          :key="index"
+          style="display: flex; margin-bottom: 22px"
+          class="el-form-item"
+        >
+          <el-form-item
+            :prop="'reference.' + index + '.name'"
+            :rules="[
+              { required: true, message: '请输入链接名', trigger: 'blur' }
+            ]"
+            style="flex: 1; max-width: 300px"
+          >
+            <el-input v-model="item.name"></el-input>
+          </el-form-item>
+          <el-form-item
+            :prop="'reference.' + index + '.link'"
+            :rules="[
+              { required: true, message: '请输入链接', trigger: 'blur' }
+            ]"
+            style="flex: 1; margin-left: 10px"
+          >
+            <el-input v-model="item.link"></el-input>
+          </el-form-item>
+          <el-button
+            @click.prevent="removeReference"
+            v-if="formData.reference.length"
+            style="margin-left: 10px"
+            type="danger"
+            >删除</el-button
+          >
+        </div>
+      </el-form-item>
+    </template>
+    <div class="footer-box">
       <el-button type="primary" @click="submit('formData')" size="mini"
         >提交</el-button
       >
-    </el-form-item>
+      <el-button @click="addReference" size="mini">新增参考</el-button>
+    </div>
   </el-form>
 </template>
 
@@ -82,7 +117,10 @@ import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import { cloneDeep } from 'lodash'
 import { category } from '../../utils/category'
-// import { response } from '../../utils/test'
+const referenceItem = {
+  name: '',
+  link: ''
+}
 export default {
   data() {
     return {
@@ -99,7 +137,8 @@ export default {
         link_url: '',
         mark_content: '',
         tag_ids: [],
-        title: ''
+        title: '',
+        reference: []
       }
     }
   },
@@ -114,7 +153,8 @@ export default {
         data = data[0]
         if (code === 200) {
           data.tag_ids = JSON.parse(data.tag_ids)
-          this.formData = data
+          data.reference = data.reference ? JSON.parse(data.reference) : []
+          this.formData = { ...this.formData, ...data }
         }
       }
     },
@@ -126,14 +166,26 @@ export default {
         if (valid) {
           let params = cloneDeep(this.formData)
           params.tag_ids = JSON.stringify(params.tag_ids)
+          params.reference = JSON.stringify(params.reference)
           let { code = 0, message = '' } = await updateAction(params)
           if (code === 201) {
+            this.$refs[formName].resetFields();
+            this.$message({ message: '操作成功', type: 'success' })
             this.$router.push({ name: 'list' })
           } else {
-            this.$message({message, type: 'warning'})
+            this.$message({ message, type: 'warning' })
           }
         }
       })
+    },
+    addReference() {
+      this.formData.reference.push(referenceItem)
+    },
+    removeReference(item) {
+      var index = this.formData.reference.indexOf(item)
+      if (index !== -1) {
+        this.dynamicValidateForm.domains.splice(index, 1)
+      }
     }
   },
   async created() {
@@ -147,5 +199,19 @@ export default {
   .v-note-edit.divarea-wrapper.scroll-style::-webkit-scrollbar {
   width: 1px !important;
   background-color: #e5e5e5;
+}
+.footer-box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000000000;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+}
+.el-form--label-top {
+  padding-bottom: 80px;
 }
 </style>
