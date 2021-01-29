@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : xiaoshubao
  Source Server Type    : MySQL
  Source Server Version : 50515
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 50515
  File Encoding         : 65001
 
- Date: 28/01/2021 19:16:14
+ Date: 29/01/2021 08:27:24
 */
 
 SET NAMES utf8mb4;
