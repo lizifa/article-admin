@@ -35,7 +35,7 @@ router.post('/update', async (req, res) => {
         .error(new Error('文章简介不符合验证规则')),
       title: Joi.string()
         .min(3)
-        .max(40)
+        .max(50)
         .error(new Error('文章标题不符合验证规则'))
         .required(),
       mark_content: Joi.string()

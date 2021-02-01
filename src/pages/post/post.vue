@@ -92,7 +92,7 @@
             <el-input v-model="item.link"></el-input>
           </el-form-item>
           <el-button
-            @click.prevent="removeReference"
+            @click.prevent="removeReference(index)"
             v-if="formData.reference.length"
             style="margin-left: 10px"
             type="danger"
@@ -169,7 +169,7 @@ export default {
           params.reference = JSON.stringify(params.reference)
           let { code = 0, message = '' } = await updateAction(params)
           if (code === 201) {
-            this.$refs[formName].resetFields();
+            this.$refs[formName].resetFields()
             this.$message({ message: '操作成功', type: 'success' })
             this.$router.push({ name: 'list' })
           } else {
@@ -181,11 +181,8 @@ export default {
     addReference() {
       this.formData.reference.push(referenceItem)
     },
-    removeReference(item) {
-      var index = this.formData.reference.indexOf(item)
-      if (index !== -1) {
-        this.dynamicValidateForm.domains.splice(index, 1)
-      }
+    removeReference(index) {
+      this.formData.reference.splice(index, 1)
     }
   },
   async created() {
