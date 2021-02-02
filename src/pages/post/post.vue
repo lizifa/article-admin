@@ -66,7 +66,7 @@
       />
     </el-form-item>
     <template v-if="formData.reference.length">
-      <el-form-item label="参考资料">
+      <el-form-item label="主要参考资料">
         <div
           v-for="(item, index) in formData.reference"
           :key="index"
