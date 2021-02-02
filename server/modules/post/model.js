@@ -1,7 +1,7 @@
 let { db } = require('../../middleware/MiddlewareMysql')
 let { createSql } = require('./fileds')
 
-class PostModel {
+let PostModel = {
   insert(insertData) {
     return new Promise((resolve, reject) => {
       let sql = createSql(insertData, { type: 'insert' })
@@ -13,7 +13,7 @@ class PostModel {
         }
       })
     })
-  }
+  },
   update(id, insertData) {
     return new Promise((resolve, reject) => {
       let sql = createSql(insertData, { type: 'update', id })
@@ -25,7 +25,7 @@ class PostModel {
         }
       })
     })
-  }
+  },
   delete(id) {
     return new Promise((resolve, reject) => {
       let sql = createSql({}, { type: 'delete', id })
@@ -37,7 +37,7 @@ class PostModel {
         }
       })
     })
-  }
+  },
   queryById(id) {
     return new Promise((resolve, reject) => {
       let sql = createSql({}, { type: 'select', id })
@@ -49,7 +49,7 @@ class PostModel {
         }
       })
     })
-  }
+  },
   queryAll(params) {
     return new Promise((resolve, reject) => {
       let { page, size } = params

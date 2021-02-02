@@ -1,3 +1,6 @@
+const express = require('express')
+const APP = express()
+
 const MYSQL_CONFIG = {
   host: 'localhost',
   user: 'root',
@@ -8,9 +11,6 @@ const MYSQL_CONFIG = {
 }
 
 const PORT = 7000
-
-const express = require('express')
-const APP = express()
 
 const ACCESSCONTROLALLOWORIGIN = '*'
 const ACCESSCONTROLALLOWHEADERS = 'Accept,Content-type,x-real-url'

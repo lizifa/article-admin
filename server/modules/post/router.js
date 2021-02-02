@@ -1,27 +1,26 @@
 let express = require('express')
 let router = express.Router()
-let PostModel = require('./model')
+let postModel = require('./model')
 let { makeResponse } = require('../../utils')
-let sql = new PostModel()
 let Joi = require('joi')
 
 // 获取帖子列表
 router.get('/post', async (req, res) => {
-  let { code, data } = await sql.queryAll(req.query)
+  let { code, data } = await postModel.queryAll(req.query)
   makeResponse(res, { code, data })
 })
 
 // 获取某个帖子详情
 router.get('/post/:id', async (req, res) => {
   let { id } = req.params
-  let { code, data } = await sql.queryById(id)
+  let { code, data } = await postModel.queryById(id)
   makeResponse(res, { code, data })
 })
 
 // 删除帖子
 router.delete('/post/:id', async (req, res) => {
   let { id } = req.params
-  await sql.delete(id)
+  await postModel.delete(id)
   makeResponse(res, { code: 205 })
 })
 
@@ -44,10 +43,10 @@ router.post('/update', async (req, res) => {
         .error(new Error('文章内容不符合验证规则'))
     }).validateAsync(formData, { stripUnknown: true })
     if (formData.article_id) {
-      await sql.update(formData.article_id, formData)
+      await postModel.update(formData.article_id, formData)
       makeResponse(res, { code: 201 })
     } else {
-      await sql.insert(formData)
+      await postModel.insert(formData)
       makeResponse(res, { code: 201 })
     }
   } catch (e) {
