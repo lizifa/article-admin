@@ -19,7 +19,7 @@ git
         >middleware  // 中间件
         >modules  // 模块层
         >utils  // 工具函数
-        >main.js // 入口文件
+        >main.js // 入口文件1
     .gitignore
     .prettierrc
     package.json
