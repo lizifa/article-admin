@@ -122,6 +122,15 @@ const referenceItem = {
   link: ''
 }
 export default {
+  // watch: {
+  //   formData: {
+  //     handler(data) {
+  //       console.log(data)
+  //     },
+  //     immediate: true,
+  //     deep: true
+  //   }
+  // },
   data() {
     return {
       category,
